@@ -1,0 +1,34 @@
+import re
+
+def extract_usernames(text):
+    # Regex code to find usernames based on your input format.
+    # This assumes usernames do not contain spaces and follow the regular expression pattern "word-characters".
+    return re.findall(r'\b[a-zA-Z0-9._]+\b', text)
+
+def compare_following_followers(following_text, followers_text):
+    # Extract usernames from both texts
+    following = set(extract_usernames(following_text))
+    followers = set(extract_usernames(followers_text))
+
+    # Find usernames that are in 'following' but not in 'followers'
+    not_following_back = following.difference(followers)
+
+    return list(not_following_back)
+
+def multiline_input(prompt):
+    print(prompt + " (type '@' and press Enter when finished):")
+    input_lines = []
+    while True:
+        line = input()
+        if line.lower() == '@':
+            break
+        input_lines.append(line)
+    return "\n".join(input_lines)
+
+
+following_text = multiline_input("Please input the full content of your Following list: ")
+
+followers_text = multiline_input("Please input the full content of your Followers list: ")
+
+people_that_dont_follow_back = compare_following_followers(following_text, followers_text)
+print("People that don't follow you back:", people_that_dont_follow_back)
